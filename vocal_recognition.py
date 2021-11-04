@@ -13,6 +13,7 @@ def speech_rec(voice):
     try:
         text = rec_vocal.recognize_google(audio, language="fr-FR")
         print("Vous avez dit : " + text)
+
     except sr.UnknownValueError:
         print("L'audio n'as pas été compris")
     except sr.RequestError as e:
