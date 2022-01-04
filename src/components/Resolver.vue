@@ -4,6 +4,9 @@
         <button type="button" class="btn btn-outline-dark btn-lg" v-on:click="voiceRecorder()">Recorder</button>
       </div>
       <div class="col align-self-center">
+        <!-- <VueSpeechToText /> -->
+      </div>
+      <div class="col align-self-center">
         <button id="stop" type="button" class="btn btn-outline-dark">Stop</button>
       </div>
       <div class="col align-self-center">
@@ -15,16 +18,21 @@
           <p>Listen</p>
         </audio>
       </div>
+      <p>{{ text }}</p>
   </div> 
 </template>
 
 <script>
+
 export default {
   name: 'Resolver',
   data() {
     return {
       test: 'toto',
-      voice: null
+      voice: null,
+      text: '',
+      runtimeTranscription: '',
+      sentences: []
     }
   },
   methods: {
@@ -56,6 +64,8 @@ export default {
         stopButton.addEventListener('click', function() {
           console.log('click')
           mediaRecorder.stop();
+          const text = Array.from(event.results).map(result => result[0]).map(result => result.transcript).join('')
+          this.runtimeTranscription = text
         });
 
         mediaRecorder.start();
