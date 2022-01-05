@@ -1,60 +1,50 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <Resolver />
+    <h1>The Recorder</h1>
+    <b-button><SpeechRecognition lang="fr-FR" :white="false" @end="speechEnd" class="icon"/></b-button>
     <hr>
-    <SpeechRecognition lang="fr-FR" :white="false" @end="speechEnd" class="icon"/>
-    <hr>
-    <button v-on:click="testGet()">Test</button>
+    <h1 v-if="isTextReceived">Text reçu => {{ textSent }}</h1>
+    <h1 v-else>No text recording</h1>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-// import HelloWorld from './components/HelloWorld.vue';
-import Resolver from './components/Resolver.vue';
 import SpeechRecognition from 'vue-webapi-speech-recognition'
 import axios from 'axios'
 
 export default Vue.extend({
   name: 'App',
   components: {
-    // HelloWorld,
-    Resolver,
     SpeechRecognition
   },
   data() {
     return {
-      text: ''
+      textRecorded: '',
+      isTextReceived: false,
+      textSent: ''
     }
   },
   methods: {
     speechEnd({transcriptions}) {
-      console.log(transcriptions);
-      this.text = transcriptions
-      this.sendText(this.text)
+      this.isTextReceived = false;
+      this.textRecorded = transcriptions;
+      this.sendText(this.textRecorded);
     },
-    sendText(text: string){
-      console.log(text, typeof(text));
+    sendText(text: string) {
+      console.log(text)
       axios
         .post('http://127.0.0.1:5000/', {text})
-        .then(response => console.log('response', response))
-        .catch(error => {
-          console.log(error)
-          // this.errored = true
+        .then(response => {
+          if(response.status == 200 && response.data.receivedText) {
+            this.textSent = response.data.receivedText;
+            this.isTextReceived = true;
+          }
         })
-        .finally(() => console.log('finally quoi'))
-    },
-    testGet() {
-      axios
-      // .post('http://127.0.0.1:5000/')
-      .post('http://127.0.0.1:5000/', {text: 'hello'})
-      .then(response => console.log('response', response))
-      .catch(error => {
-        console.log(error)
-        // this.errored = true
-      })
+        .catch(error => {
+          console.error(error);
+          this.isTextReceived = false;
+        })
     }
   }
 });
