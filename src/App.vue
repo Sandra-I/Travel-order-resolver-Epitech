@@ -10,14 +10,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import SpeechRecognition from 'vue-webapi-speech-recognition'
 import axios from 'axios'
 
 export default Vue.extend({
   name: 'App',
-  components: {
-    SpeechRecognition
-  },
   data() {
     return {
       textRecorded: '',

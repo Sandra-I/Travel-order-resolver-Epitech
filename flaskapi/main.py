@@ -13,19 +13,22 @@ CORS(app, resources=r'http://localhost:8080/*')
 
 @app.route('/', methods = ['GET', 'POST']) 
 @cross_origin() 
-def home(): 
+def home():
+    print('home') 
     if(request.method == 'POST'): 
         data = json.loads(request.data)
         print(data)
+        print(type(data))
         # data = "hello world"
-        return jsonify(data)
+        return jsonify({'receivedText': data['text']})
     return jsonify({'data': "toto"})
 
-@app.route('/vocal/<string:data>', methods = ['POST'])
+@app.route('/vocal/<string:data>', methods = ['GET', 'POST'])
 @cross_origin() 
-def vocal(data): 
+def vocal(data):
+    data = json.loads(request.data)
     print('data', data, type(data))
-    return jsonify({'data': data})
+    return jsonify({'receivedText': data['text']})
 
 @app.route('/home/<text>', methods = ['POST', 'GET', 'OPTIONS'])
 # @cross_origin(allow_headers=['*'], send_wildcard=True) 

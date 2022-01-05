@@ -6,15 +6,13 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import VueSpeechToText from 'vue-speech-to-text'
-// vue-audio-recorder-and-player 
-// import vueAudioRecorderAndPlayer from 'vue-audio-recorder-and-player'
+import SpeechRecognition from 'vue-webapi-speech-recognition'
 
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
-Vue.use(VueSpeechToText)
-// Vue.use(vueAudioRecorderAndPlayer)
+
+Vue.use(SpeechRecognition)
 
 Vue.config.productionTip = false
 
