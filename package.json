@@ -17,8 +17,6 @@
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
     "vue": "^2.6.11",
-    "vue-audio-recorder-and-player": "^0.1.13",
-    "vue-speech-to-text": "^0.1.3",
     "vue-webapi-speech-recognition": "^1.0.1"
   },
   "devDependencies": {
