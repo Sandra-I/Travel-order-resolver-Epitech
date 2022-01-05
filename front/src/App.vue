@@ -30,7 +30,7 @@ export default Vue.extend({
     sendText(text: string) {
       console.log(text)
       axios
-        .post('http://127.0.0.1:5000/', {text})
+        .post('http://127.0.0.1:5000/vocal', {text})
         .then(response => {
           if(response.status == 200 && response.data.receivedText) {
             this.textSent = response.data.receivedText;
