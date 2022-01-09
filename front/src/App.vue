@@ -1,47 +1,23 @@
 <template>
-  <div id="app">
-    <h1>The Recorder</h1>
-    <b-button><SpeechRecognition lang="fr-FR" :white="false" @end="speechEnd" class="icon"/></b-button>
-    <hr>
-    <h1 v-if="isTextReceived">Text reçu => {{ textSent }}</h1>
-    <h1 v-else>No text recording</h1>
+  <div id="app" class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>The Recorder</h1>
+      </div>
+    </div>
+    <hr/>
+    <HomePage />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import axios from 'axios'
+import HomePage from './components/HomePage.vue';
 
 export default Vue.extend({
   name: 'App',
-  data() {
-    return {
-      textRecorded: '',
-      isTextReceived: false,
-      textSent: ''
-    }
-  },
-  methods: {
-    speechEnd({transcriptions}) {
-      this.isTextReceived = false;
-      this.textRecorded = transcriptions;
-      this.sendText(this.textRecorded);
-    },
-    sendText(text: string) {
-      console.log(text)
-      axios
-        .post('http://127.0.0.1:5000/vocal', {text})
-        .then(response => {
-          if(response.status == 200 && response.data.receivedText) {
-            this.textSent = response.data.receivedText;
-            this.isTextReceived = true;
-          }
-        })
-        .catch(error => {
-          console.error(error);
-          this.isTextReceived = false;
-        })
-    }
+  components: {
+    HomePage
   }
 });
 </script>
@@ -55,8 +31,5 @@ export default Vue.extend({
   color: #2c3e50;
   margin-top: 60px;
 }
-.icon {
-  width: 64px;
-  height: 64px;
-}
+
 </style>
