@@ -1,31 +1,30 @@
 <template>
-  <div>
-    <div class="row justify-content-md-center my-5" id="recorderBloc">
+  <div class="row justify-content-md-center">
+    <div class="col col-12 my-5" id="recorderBloc">
       <h1>Où souhaitez-vous aller ?</h1>
-      <div class="col-12"><p>Cliquez sur le micro pour indiquer votre trajet !</p></div>
-      <div class="col-12">
-        <SpeechRecognition lang="fr-FR" :white="false" @end="speechEnd" class="icon"/>
-      </div>
+      <p>Cliquez sur le micro pour indiquer votre trajet !</p>
+      <SpeechRecognition lang="fr-FR" :white="false" @end="speechEnd" class="icon"/>
     </div>
       
-    <div class="row my-5">
-      <div class="col-12">
-        <h1>Votre trajet</h1>
-        <p v-if="isTextReceived">{{ textSent }}</p>
-        <p v-else>Pas de trajet demandé</p>
-      </div>
+    <div class="col col-12 my-5">
+      <h1>Votre trajet</h1>
+      <p v-if="isTextReceived">{{ textSent }}</p>
+      <p v-else>Pas de trajet demandé</p>
     </div>
 
-    <div class="row my-5">
-      <div class="col">
-        <h1>Les itinéraires</h1>
-        <div v-for="(itinerary, index) in itinerariesSort" :key="index">
-          <p>{{ itinerary.cities }}</p>
-          <p>Temps de trajet : {{ itinerary.distance }}</p>
-          <!-- <p v-for="it in itinerary" :key="it">{{ it }}</p> -->
-          <hr>
-        </div>
-      </div>
+    <div class="col col-12 my-5">
+      <b-button v-b-toggle.collapse-1 class="m-1">Toggle Collapse</b-button>
+      <b-collapse :visible="showItinerariesBloc" id="collapse-1">
+        <b-card>
+          <h1>Les itinéraires</h1>
+          <div v-for="(itinerary, index) in itinerariesSort" :key="index">
+            <p>{{ itinerary.cities }}</p>
+            <p>Temps de trajet : {{ itinerary.distance }} minutes</p>
+            <!-- <p v-for="it in itinerary" :key="it">{{ it }}</p> -->
+            <hr>
+          </div>
+        </b-card>
+      </b-collapse>
     </div>
   </div>
 </template>
@@ -46,7 +45,8 @@ export default Vue.extend({
         { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
         { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
         { cities: ['Paris', 'Marseille'], distance: 30 }
-      ]
+      ],
+      showItinerariesBloc: true
     }
   },
   computed: {
@@ -83,7 +83,7 @@ export default Vue.extend({
 
 <style lang="scss">
 #recorderBloc {
-  background-color: rgb(255, 223, 223);
+  // background-color: rgb(255, 223, 223);
 
   .icon {
     img {

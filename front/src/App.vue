@@ -1,12 +1,9 @@
 <template>
   <div id="app" class="container">
-    <div class="row">
-      <div class="col-12">
-        <h1>The Recorder</h1>
-      </div>
-    </div>
-    <hr/>
-    <HomePage />
+    <b-card>
+      <h1 class="card-title">The Recorder</h1>
+      <HomePage />
+    </b-card>
   </div>
 </template>
 
