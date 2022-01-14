@@ -1,4 +1,4 @@
-import word_class as wcl
+import source.TripEvaluation.word_class as wcl
 
 CCONJ_Relation = [
     wcl.WordSense("depuis",     wcl.Dire.START, wcl.Impact.STRONG),

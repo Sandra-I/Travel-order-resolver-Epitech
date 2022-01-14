@@ -1,8 +1,8 @@
 from spacy.symbols import NOUN, CCONJ, ADP, VERB
 import numpy as numpy
 
-import relation_dic as rd
-import word_class as wcl
+import source.TripEvaluation.relation_dic as rd
+import source.TripEvaluation.word_class as wcl
 
 
 def evaluate_token_strength(tokens):
