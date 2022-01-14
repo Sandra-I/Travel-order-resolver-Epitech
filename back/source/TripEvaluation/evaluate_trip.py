@@ -1,4 +1,4 @@
-import word_class as wcl
+import source.TripEvaluation.word_class as wcl
 
 def evaluate_trip(weighedTokens):
     city_order = []

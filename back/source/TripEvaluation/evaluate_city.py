@@ -1,5 +1,5 @@
 import spacy
-import evaluate_token as et
+import source.TripEvaluation.evaluate_token as et
 
 def evaluate_city(str):
     print("Request: " + str)
