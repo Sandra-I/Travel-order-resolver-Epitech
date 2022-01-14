@@ -19,9 +19,8 @@
         <b-card>
           <h1>Les itinéraires</h1>
           <div v-for="(itinerary, index) in itinerariesSort" :key="index">
-            <p>{{ itinerary.cities }}</p>
+            <p v-for="it in itinerary.itineraries" :key="it">{{ it }}</p>
             <p>Temps de trajet : {{ itinerary.distance }} minutes</p>
-            <!-- <p v-for="it in itinerary" :key="it">{{ it }}</p> -->
             <hr>
           </div>
         </b-card>
@@ -40,19 +39,19 @@ export default Vue.extend({
     return {
       isTextReceived: false,
       textSent: '',
-      // itineraries: {},
+      itineraries: {},
       // itineraries: [['Paris', 'Annecy', 'Grenoble', 'Marseille'], 47],
-      itineraries: [
-        { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
-        { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
-        { cities: ['Paris', 'Marseille'], distance: 30 }
-      ],
+      // itineraries: [
+      //   { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
+      //   { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
+      //   { cities: ['Paris', 'Marseille'], distance: 30 }
+      // ],
       showItinerariesBloc: false
     }
   },
   computed: {
     itinerariesSort() {
-      return [...this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
+      return [this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
         return a.distance - b.distance;
       });
     }
@@ -62,15 +61,19 @@ export default Vue.extend({
       let textRecorded = '';
       this.isTextReceived = false;
       textRecorded = transcriptions;
+      console.log('textRecorded', textRecorded)
       this.sendText(textRecorded);
     },
     sendText(text: string) {
       axios
         .post('http://127.0.0.1:5000/vocal', {text})
         .then(response => {
-          if(response.status == 200 && response.data.receivedText) {
-            this.textSent = response.data.receivedText;
+          if(response.status == 200 && response.data.data) {
+            console.log(response.data.data)
+            // this.textSent = response.data.receivedText;
             this.isTextReceived = true;
+            this.itineraries = response.data.data;
+            console.log(this.itineraries)
           }
         })
         .catch(error => {

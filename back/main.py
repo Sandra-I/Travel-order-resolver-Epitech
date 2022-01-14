@@ -31,9 +31,10 @@ def vocal():
     # Ajouter une validation avant de call cette méthode
         if tripArray != 'Invalid Sentence':
             print(tripArray)
-            it.get_itinerary(locArray = tripArray)
+            itinerary = it.get_itinerary(locArray = tripArray)
+            print(f"reponse finale {itinerary}")
     
-    return jsonify({'receivedText': data['text']})
+    return jsonify({'data': itinerary})
 
 if __name__ == '__main__': 
     app.run(debug = True) 
