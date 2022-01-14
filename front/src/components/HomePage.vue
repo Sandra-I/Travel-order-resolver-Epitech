@@ -13,7 +13,8 @@
     </div>
 
     <div class="col col-12 my-5">
-      <b-button v-b-toggle.collapse-1 class="m-1">Toggle Collapse</b-button>
+      <!-- <b-button v-b-toggle.collapse-1 class="m-1"></b-button> -->
+      <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
         <b-card>
           <h1>Les itinéraires</h1>
@@ -46,7 +47,7 @@ export default Vue.extend({
         { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
         { cities: ['Paris', 'Marseille'], distance: 30 }
       ],
-      showItinerariesBloc: true
+      showItinerariesBloc: false
     }
   },
   computed: {
