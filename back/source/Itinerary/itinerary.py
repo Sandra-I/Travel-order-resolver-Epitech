@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[222]:
-
-
 import os
 import numpy as np
 import pandas as pd
@@ -24,31 +21,16 @@ itineraries['end'] = trajet_splited.str[1]
 
 itineraries.drop('trajet', axis=1, inplace=True)
 
-itineraries
-
-
-
-# In[224]:
-
 
 # Filter all possible localisations
 locsStart = itineraries['start'].tolist()
 locsEnd = itineraries['end'].tolist()
 locs = list(dict.fromkeys(locsStart + locsEnd))
-# len(locs)
-locs
-
-
-
-# In[225]:
 
 
 # get all possible itineraries from un localisation
 def get_itineraries(fromLoc):
     return itineraries.loc[itineraries['start'] == fromLoc]
-
-
-# In[226]:
 
 
 # update distance of localisation from source
@@ -78,9 +60,6 @@ def updateDistanceFromSource(matrix, itineraries):
     # print(" ")
     
     return matrix
-
-
-# In[227]:
 
 
 # Find the minimum distance that has not been processed and that is not infinite
@@ -120,12 +99,6 @@ def findMiniDistanceFromSource(matrix):
         
     return location
     
-                
-    
-
-
-# In[228]:
-
 
 # find the shortest distance between source and destination 
 def get_best_itinerary(matrix, source, destination):
@@ -163,9 +136,6 @@ def get_best_itinerary(matrix, source, destination):
         print("")
         
         return "None"
-
-
-# In[229]:
 
 
 # Find the shortest path among all possible sources and destinations 
@@ -233,29 +203,31 @@ def dijsktra(df, source, destination):
     return "None"
     
 
-
-# In[230]:
-
-
 def get_step_itinerary(df, source, destination):
     result = dijsktra(df, source, destination)
-
-    if result == "None":
-        result = dijsktra(df, destination, source)
-
-    if result != "None":
-        itineraries = result['itineraries']
+    resultReversed = dijsktra(df, destination, source)
+    resultToReturn = False
+    
+    if resultReversed != "None":
+        itineraries = resultReversed['itineraries']
         itineraries.reverse()
-        result['itineraries'] = itineraries
-        return result
+        resultReversed['itineraries'] = itineraries
+            
+    if result == "None" and resultReversed != "None":
+        resultToReturn = resultReversed
     
-    else:
-        return "None"
+    if resultReversed == "None" and result != "None":
+        resultToReturn = result
     
-
-
-# In[234]:
-
+    if resultReversed != "None" and result != "None":
+            
+        if resultReversed['distance'] < result['distance']:
+            resultToReturn = resultReversed
+        else:
+            resultToReturn = result
+    
+    return resultToReturn
+    
 
 def get_itinerary(df = itineraries, locArray = []):
     print(f"I am in {locArray}")
@@ -293,11 +265,3 @@ def get_itinerary(df = itineraries, locArray = []):
             'distance': distance,
             'itineraries': fullTrip
     }
-    
-
-
-# In[235]:
-
-
-
-# get_itinerary(itineraries, ["Paris", "Limoges", "Bordeaux"])
