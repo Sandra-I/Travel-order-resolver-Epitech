@@ -18,7 +18,7 @@
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
         <b-card>
           <h1>Les itinéraires</h1>
-          <div v-for="(itinerary, index) in itinerariesSort" :key="index">
+          <div v-for="(itinerary, index) in itineraries" :key="index">
             <p v-for="it in itinerary.itineraries" :key="it">{{ it }}</p>
             <p>Temps de trajet : {{ itinerary.distance }} minutes</p>
             <hr>
@@ -39,23 +39,23 @@ export default Vue.extend({
     return {
       isTextReceived: false,
       textSent: '',
-      itineraries: {},
-      // itineraries: [['Paris', 'Annecy', 'Grenoble', 'Marseille'], 47],
-      // itineraries: [
-      //   { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
-      //   { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
-      //   { cities: ['Paris', 'Marseille'], distance: 30 }
-      // ],
+      // itineraries: {},
+      // itinerariesSort: [['Paris', 'Annecy', 'Grenoble', 'Marseille'], 47],
+      itineraries: [
+        { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
+        { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
+        { cities: ['Paris', 'Marseille'], distance: 30 }
+      ],
       showItinerariesBloc: false
     }
   },
-  computed: {
-    itinerariesSort() {
-      return [...this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
-        return a.distance - b.distance;
-      });
-    }
-  },
+  // computed: {
+  //   itinerariesSort() {
+  //     return [this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
+  //       return a.distance - b.distance;
+  //     });
+  //   }
+  // },
   methods: {
     speechEnd({transcriptions}) {
       let textRecorded = '';
