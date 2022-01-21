@@ -51,7 +51,7 @@ export default Vue.extend({
   },
   computed: {
     itinerariesSort() {
-      return [this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
+      return [...this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
         return a.distance - b.distance;
       });
     }
