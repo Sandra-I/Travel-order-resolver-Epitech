@@ -1,13 +1,12 @@
 import json
 from flask import Flask, jsonify, request 
 from flask_cors import CORS, cross_origin
-# import sys
-# sys.path.append('/home/sandra/Epitech_Project/T-AIA-901/tor_msc2022_group-100/back/source/TripEvaluation') 
 import source.TripEvaluation.main_eval as tp
 import source.Itinerary.itinerary as it
 
 app = Flask(__name__) 
-CORS(app, resources=r'http://localhost:8080/*')
+CORS(app, resources={r"/foo": {"origins": "*"}})
+# CORS(app, resources=r'http://localhost:8080/*')
 
 @app.route('/', methods = ['GET', 'POST']) 
 @cross_origin() 
