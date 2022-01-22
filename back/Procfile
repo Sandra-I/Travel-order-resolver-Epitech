@@ -1,2 +1,1 @@
-web: gunicorn main:app
-log: logs --tail
+web: gunicorn mainoo:app --log-file -
