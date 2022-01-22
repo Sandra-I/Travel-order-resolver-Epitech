@@ -56,6 +56,9 @@ export default Vue.extend({
   //     });
   //   }
   // },
+  mounted() {
+    this.welcome();
+  },
   methods: {
     speechEnd({transcriptions}) {
       let textRecorded = '';
@@ -66,7 +69,7 @@ export default Vue.extend({
     },
     sendText(text: string) {
       axios
-        .post('http://127.0.0.1:5000/vocal', {text})
+        .post('http://0.0.0.0:5000/vocal', {text})
         .then(response => {
           if(response.status == 200 && response.data.data) {
             console.log(response.data.data)
@@ -79,6 +82,15 @@ export default Vue.extend({
         .catch(error => {
           console.error(error);
           this.isTextReceived = false;
+        })
+    },
+    welcome() {
+      axios
+        .get('http://0.0.0.0:5000')
+        .then(response => {
+          if(response.status == 200) {
+            console.log(response.data);
+          }
         })
     }
   }
