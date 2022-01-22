@@ -8,6 +8,8 @@ cymem==2.0.6
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl
 fr-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_lg-3.2.0/fr_core_news_lg-3.2.0-py3-none-any.whl
 fr-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-3.2.0/fr_core_news_sm-3.2.0-py3-none-any.whl
+Flask==2.0.2
+Flask-Cors==3.0.10
 gunicorn==20.1.0
 idna==3.3
 Jinja2==3.0.3
