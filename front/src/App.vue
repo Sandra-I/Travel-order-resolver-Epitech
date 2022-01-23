@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container">
-    <b-card>
-      <h1 class="card-title">The Recorder</h1>
+    <b-card class="theBloc">
+      <h1 class="card-title mt-4">The Recorder</h1>
       <HomePage />
     </b-card>
   </div>
@@ -20,13 +20,21 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 
+body {
+  .theBloc {
+    border-radius: 50px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 35px 4px #DDDDDD;
+  }
+
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
+}
 </style>

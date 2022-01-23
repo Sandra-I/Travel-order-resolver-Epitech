@@ -43,12 +43,11 @@ export default Vue.extend({
     return {
       isTextReceived: false,
       textSent: '',
-      // itineraries: {},
-      // itinerariesSort: [['Paris', 'Annecy', 'Grenoble', 'Marseille'], 47],
-      itineraryResult: {
-        "distance": 283,
-        "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
-      },
+      itineraryResult: {},
+      // itineraryResult: {
+      //   "distance": 283,
+      //   "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
+      // },
       showItinerariesBloc: true
     }
   },
@@ -102,26 +101,12 @@ export default Vue.extend({
 
 <style lang="scss">
 #recorderBloc {
-  // background-color: rgb(255, 223, 223);
-
   .icon {
     img {
+      cursor: pointer;
       margin-top: 20px;
       width: 64px;
       height: 64px;
-      -ms-transition: width 5s, height 5s, transform 5s;
-      -webkit-transition: width 5s, height 5s, transform 5s;
-      transition: width 5s, height 5s, transform 5s;
-    }
-
-    :hover {
-      cursor: pointer;
-      width: 100px;
-      height: 100px;
-      // background-color: gold;
-      -ms-transform: scale(1.5); /* IE 9 */
-      -webkit-transform: scale(1.5); /* Safari 3-8 */
-      transform: scale(1.5);
     }
   }
 }
