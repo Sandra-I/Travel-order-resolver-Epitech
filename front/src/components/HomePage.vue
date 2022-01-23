@@ -43,11 +43,11 @@ export default Vue.extend({
     return {
       isTextReceived: false,
       textSent: '',
-      // itineraryResult: {},
-      itineraryResult: {
-        "distance": 283,
-        "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
-      },
+      itineraryResult: {},
+      // itineraryResult: {
+      //   "distance": 283,
+      //   "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
+      // },
       showItinerariesBloc: false
     }
   },
