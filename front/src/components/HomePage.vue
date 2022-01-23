@@ -69,12 +69,12 @@ export default Vue.extend({
     },
     sendText(text: string) {
       axios
-        .post('http://0.0.0.0:5000/vocal', {text})
+        .post('https://travel-resolver-100.herokuapp.com/vocal', {text})
         .then(response => {
           if(response.status == 200 && response.data.data) {
             console.log(response.data.data)
-            // this.textSent = response.data.receivedText;
             this.isTextReceived = true;
+            this.textSent = text;
             this.itineraries = response.data.data;
             console.log(this.itineraries)
           }
@@ -86,7 +86,7 @@ export default Vue.extend({
     },
     welcome() {
       axios
-        .get('http://0.0.0.0:5000')
+        .get('https://travel-resolver-100.herokuapp.com')
         .then(response => {
           if(response.status == 200) {
             console.log(response.data);
