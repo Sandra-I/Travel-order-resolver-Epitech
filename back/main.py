@@ -5,8 +5,7 @@ import source.TripEvaluation.main_eval as tp
 import source.Itinerary.itinerary as it
 
 app = Flask(__name__) 
-CORS(app, resources={r"/foo": {"origins": "*"}})
-# CORS(app, resources=r'http://localhost:8080/*')
+CORS(app, resources=r'https://travel-resolver-100.herokuapp.com/*')
 
 @app.route('/', methods = ['GET']) 
 @cross_origin() 
