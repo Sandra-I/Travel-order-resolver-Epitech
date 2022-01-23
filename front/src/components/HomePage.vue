@@ -16,7 +16,7 @@
       <!-- <b-button v-b-toggle.collapse-1 class="m-1"></b-button> -->
       <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
-        <b-card>
+        <b-card id="itiBloc">
           <h1>Les itinéraires</h1>
           <hr>
           <!-- <div>{{ itineraryResult }}</div> -->
@@ -101,6 +101,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+#itiBloc {
+  border: none;
+}
 #recorderBloc {
   .icon {
     img {
