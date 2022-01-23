@@ -18,11 +18,15 @@
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
         <b-card>
           <h1>Les itinéraires</h1>
-          <div v-for="(itinerary, index) in itineraries" :key="index">
-            <p v-for="it in itinerary.itineraries" :key="it">{{ it }}</p>
-            <p>Temps de trajet : {{ itinerary.distance }} minutes</p>
-            <hr>
+          <hr>
+          <!-- <div>{{ itineraryResult }}</div> -->
+          <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
+          <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
+            <!-- <p v-for="it in itinerary.itineraries" :key="it">{{ it }}</p> -->
+            <p>{{ itinerary }}</p>
+            <!-- <hr> -->
           </div>
+          <hr>
         </b-card>
       </b-collapse>
     </div>
@@ -41,12 +45,11 @@ export default Vue.extend({
       textSent: '',
       // itineraries: {},
       // itinerariesSort: [['Paris', 'Annecy', 'Grenoble', 'Marseille'], 47],
-      itineraries: [
-        { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
-        { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
-        { cities: ['Paris', 'Marseille'], distance: 30 }
-      ],
-      showItinerariesBloc: false
+      itineraryResult: {
+        "distance": 283,
+        "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
+      },
+      showItinerariesBloc: true
     }
   },
   // computed: {
@@ -57,7 +60,7 @@ export default Vue.extend({
   //   }
   // },
   mounted() {
-    this.welcome();
+    // this.welcome();
   },
   methods: {
     speechEnd({transcriptions}) {
@@ -75,8 +78,8 @@ export default Vue.extend({
             console.log(response.data.data)
             this.isTextReceived = true;
             this.textSent = text;
-            this.itineraries = response.data.data;
-            console.log(this.itineraries)
+            this.itineraryResult = response.data.data;
+            console.log(this.itineraryResult)
           }
         })
         .catch(error => {
