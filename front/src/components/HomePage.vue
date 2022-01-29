@@ -16,13 +16,17 @@
       <!-- <b-button v-b-toggle.collapse-1 class="m-1"></b-button> -->
       <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
-        <b-card>
+        <b-card id="itiBloc">
           <h1>Les itinéraires</h1>
-          <div v-for="(itinerary, index) in itinerariesSort" :key="index">
-            <p v-for="it in itinerary.itineraries" :key="it">{{ it }}</p>
-            <p>Temps de trajet : {{ itinerary.distance }} minutes</p>
-            <hr>
+          <hr>
+          <!-- <div>{{ itineraryResult }}</div> -->
+          <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
+          <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
+            <!-- <p v-for="it in itinerary.itineraries" :key="it">{{ it }}</p> -->
+            <p>{{ itinerary }}</p>
+            <!-- <hr> -->
           </div>
+          <hr>
         </b-card>
       </b-collapse>
     </div>
@@ -39,22 +43,23 @@ export default Vue.extend({
     return {
       isTextReceived: false,
       textSent: '',
-      itineraries: {},
-      // itineraries: [['Paris', 'Annecy', 'Grenoble', 'Marseille'], 47],
-      // itineraries: [
-      //   { cities: ['Paris', 'Annecy', 'Grenoble', 'Marseille'], distance: 47 },
-      //   { cities: ['Paris', 'Grenoble', 'Marseille'], distance: 40 },
-      //   { cities: ['Paris', 'Marseille'], distance: 30 }
-      // ],
+      itineraryResult: {},
+      // itineraryResult: {
+      //   "distance": 283,
+      //   "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
+      // },
       showItinerariesBloc: false
     }
   },
-  computed: {
-    itinerariesSort() {
-      return [this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
-        return a.distance - b.distance;
-      });
-    }
+  // computed: {
+  //   itinerariesSort() {
+  //     return [this.itineraries].sort(function (a: { distance: number; }, b: { distance: number; }) {
+  //       return a.distance - b.distance;
+  //     });
+  //   }
+  // },
+  mounted() {
+    // this.welcome();
   },
   methods: {
     speechEnd({transcriptions}) {
@@ -66,19 +71,29 @@ export default Vue.extend({
     },
     sendText(text: string) {
       axios
-        .post('http://127.0.0.1:5000/vocal', {text})
+        .post('https://travel-resolver-100.herokuapp.com/vocal', {text})
         .then(response => {
           if(response.status == 200 && response.data.data) {
             console.log(response.data.data)
-            // this.textSent = response.data.receivedText;
             this.isTextReceived = true;
-            this.itineraries = response.data.data;
-            console.log(this.itineraries)
+            this.textSent = text;
+            this.itineraryResult = response.data.data;
+            this.showItinerariesBloc = true;
+            console.log(this.itineraryResult)
           }
         })
         .catch(error => {
           console.error(error);
           this.isTextReceived = false;
+        })
+    },
+    welcome() {
+      axios
+        .get('https://travel-resolver-100.herokuapp.com')
+        .then(response => {
+          if(response.status == 200) {
+            console.log(response.data);
+          }
         })
     }
   }
@@ -86,27 +101,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+#itiBloc {
+  border: none;
+}
 #recorderBloc {
-  // background-color: rgb(255, 223, 223);
-
   .icon {
     img {
+      cursor: pointer;
       margin-top: 20px;
       width: 64px;
       height: 64px;
-      -ms-transition: width 5s, height 5s, transform 5s;
-      -webkit-transition: width 5s, height 5s, transform 5s;
-      transition: width 5s, height 5s, transform 5s;
-    }
-
-    :hover {
-      cursor: pointer;
-      width: 100px;
-      height: 100px;
-      // background-color: gold;
-      -ms-transform: scale(1.5); /* IE 9 */
-      -webkit-transform: scale(1.5); /* Safari 3-8 */
-      transform: scale(1.5);
     }
   }
 }
