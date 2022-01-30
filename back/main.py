@@ -8,7 +8,6 @@ import copy
 
 app = Flask(__name__) 
 CORS(app, resources=r'https://travel-resolver-100.netlify.app/*')
-# CORS(app, resources=r'https://travel-resolver-100.herokuapp.com/*')
 
 @app.route('/', methods = ['GET']) 
 @cross_origin() 
