@@ -1,8 +1,9 @@
-# travel-order-resolver api
+# Travel-order-resolver api
 
-## Project setup
+From /back folder
+### Install dependencies
 ```
-XXXX
+pip install -r requirements.txt
 ```
 
 ### Compiles and hot-reloads for development
