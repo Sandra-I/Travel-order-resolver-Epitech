@@ -1,8 +1,8 @@
 <template>
   <div class="here-map">
-    <div ref="map" v-bind:style="{ width: width + '%', height: height }" style="float: left"></div>
+    <div ref="map" id="map" v-bind:style="{ width: width + '%', height: height }" style="float: left"></div>
     <ol>
-      <p>LA ROUTE EN DETAILS</p>
+      <h4>LA ROUTE EN DETAILS</h4>
       <li v-for="(direction, key) in directions" v-bind:key="key">
         <p v-html="direction.instruction"></p>
       </li>
@@ -28,7 +28,8 @@ export default {
     height: String,
     center: Object,
     start: String,
-    finish: String
+    finish: String,
+    way: Array
   },
   created() {
     this.platform = new window.H.service.Platform({
@@ -38,8 +39,14 @@ export default {
     this.geocoder = this.platform.getGeocodingService();
   },
   mounted() {
+    console.log('this.way', this.way)
     this.initializeHereMap();
     this.route();
+  },
+  watch: {
+    way() {
+      this.route();
+    }
   },
   methods: {
     initializeHereMap() {
@@ -60,6 +67,7 @@ export default {
     }, 
     geocode(query) {
       return new Promise((resolve, reject) => {
+        console.log('Promise geocode')
         this.geocoder.geocode({ searchText: query }, data => {
           if(data.Response.View[0].Result.length > 0) {
             data = data.Response.View[0].Result.map(location => {
@@ -73,7 +81,7 @@ export default {
             reject({ "message": "No data found" });
           }
         }, error => {
-            reject(error);
+          reject(error);
         });
       });
     },
@@ -85,9 +93,25 @@ export default {
       }
       let waypoints = [];
       this.map.removeObjects(this.map.getObjects());
+      
       this.directions = [];
-      waypoints = [this.geocode(this.start), this.geocode(this.finish)];
+
+      this.way.map(res => {
+        console.log(res)
+        // const goeRes = await this.geocode(res);
+        waypoints.push(this.geocode(res));
+      })
+
+      // for (const res of this.way) {
+      //   console.log('for')
+      //   const test = this.geocode(res)
+      //   waypoints.push(test);
+      // }
+      
+      // waypoints = [this.geocode('Toulouse'), this.geocode('Gare de Brive-la-Gaillarde'), this.geocode('Gare de Bordeaux-St-Jean')];
+      console.log(waypoints)
       Promise.all(waypoints).then(result => {
+        console.log('Promise all')
         let markers = [];
         for(let i = 0; i < result.length; i++) {
           params["waypoint" + i] = result[i][0].lat + "," + result[i][0].lng;
