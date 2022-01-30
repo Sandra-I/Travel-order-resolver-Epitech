@@ -16,10 +16,26 @@
       <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
         <template  v-if="Object.keys(this.itineraryResult).length != 0">
+          <div>
+            <h1>Les itinéraires</h1>
+            <b-tabs content-class="mt-3" align="center">
+              <b-tab title="Train" active>
+                  <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
+                  <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
+                    <p>{{ itinerary }}</p>
+                  </div>
+                  <hr>
+                <HereMap :center="center" ref="map" width="100" height="640px" :way="trainResult"/>
+              </b-tab>
 
+              <b-tab title="Voiture">
+                <HereMap :center="center" ref="map" width="100" height="640px" :way="carResult"/>
+              </b-tab>
+            </b-tabs>
+          </div>
         </template>
 
-        <div>
+        <!-- <div>
           <h1>Les itinéraires</h1>
           <b-tabs content-class="mt-3" align="center">
             <b-tab title="Train" active>
@@ -35,7 +51,7 @@
               <HereMap :center="center" ref="map" width="100" height="640px" :way="carResult"/>
             </b-tab>
           </b-tabs>
-        </div>
+        </div> -->
       </b-collapse>
     </div>
   </div>
@@ -55,7 +71,7 @@ export default Vue.extend({
       textSent: '',
       itineraryResult: {},
       carResult: {},
-      showItinerariesBloc: true,
+      showItinerariesBloc: false,
       center:{ 
         lat: 43.6124203, 
         lng: 1.4289301
