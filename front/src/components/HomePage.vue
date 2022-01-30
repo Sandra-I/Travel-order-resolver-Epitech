@@ -67,17 +67,17 @@ export default Vue.extend({
       this.isTextReceived = false;
       textRecorded = transcriptions;
       console.log('textRecorded', textRecorded)
-      this.sendText(textRecorded);
+      if (textRecorded) this.sendText(textRecorded);
     },
     sendText(text: string) {
       axios
         .post('https://travel-resolver-100.herokuapp.com/vocal', {text})
         .then(response => {
-          if(response.status == 200 && response.data.data) {
-            console.log(response.data.data)
+          if(response.status == 200 && response.data) {
+            console.log(response.data)
             this.isTextReceived = true;
             this.textSent = text;
-            this.itineraryResult = response.data.data;
+            this.itineraryResult = response.data.train;
             this.showItinerariesBloc = true;
             console.log(this.itineraryResult)
           }
