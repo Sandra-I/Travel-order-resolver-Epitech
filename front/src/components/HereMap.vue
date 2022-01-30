@@ -1,134 +1,125 @@
 <template>
-  <div id="map">
-    <div id="mapContainer" style="height:600px;width:100%" ref="hereMap"></div>
+  <div class="here-map">
+    <div ref="map" v-bind:style="{ width: width + '%', height: height }" style="float: left"></div>
+    <ol>
+      <p>LA ROUTE EN DETAILS</p>
+      <li v-for="(direction, key) in directions" v-bind:key="key">
+        <p v-html="direction.instruction"></p>
+      </li>
+    </ol>
   </div>
 </template>
 
 <script>
 export default {
   name: "HereMap",
-  props: {
-    center: Object,
-    // zoom: String,
-    // latitude: String,
-    // longitude: String
-    // center object { lat: 43.6124203, lng: 1.4289301 }
-  },
   data() {
     return {
-      // H: window.H,
-      map: {},
+      map: null,
+      platform: {},
+      router: {},
       geocoder: {},
-      platform: null,
-      apikey: "Qe4qjarfX-UGou2haKF8YC83z4tZFZANgiHpBEKAcgs",
-      routingService: {},
-      start: {
-        lat: "43.6124203",
-        lng: "1.4289301"
-      },
-      finish: {
-        lat: "53.6124203",
-        lng: "3"
-      }
-    };
+      directions: [],
+      apikey: "Qe4qjarfX-UGou2haKF8YC83z4tZFZANgiHpBEKAcgs"
+    }
   },
-  // created() {
-  //   this.platform = new window.H.service.Platform({
-  //     apikey: this.apikey
-  //   });
-  // },
-  mounted() {
-    // Initialize the platform object:
-    const platform = new window.H.service.Platform({
+  props: {
+    width: String,
+    height: String,
+    center: Object,
+    start: String,
+    finish: String
+  },
+  created() {
+    this.platform = new window.H.service.Platform({
       apikey: this.apikey
     });
-    this.platform = platform;
+    this.router = this.platform.getRoutingService();
     this.geocoder = this.platform.getGeocodingService();
-
-    // let maptypes = this.platform.createDefaultLayers();
-    // const mapContainer = this.$refs.hereMap;
-    // this.map = new window.H.Map(
-    //   mapContainer,
-    //   maptypes.vector.normal.normal.map,
-    //   {
-    //     zoom: this.zoom,
-    //     center: this.center
-    //   }
-    // )
-    this.routingService = this.platform.getRoutingService();
-
-    console.log(this.routingService)
-    
+  },
+  mounted() {
     this.initializeHereMap();
-    // this.drawRoute(this.start, this.finish);
-    
+    this.route();
   },
   methods: {
-    initializeHereMap() { // rendering map
-      const mapContainer = this.$refs.hereMap;
-      const H = window.H;
-      // Obtain the default map types from the platform object
+    initializeHereMap() {
       let maptypes = this.platform.createDefaultLayers();
-
-      // Instantiate (and display) a map object:
-      this.map = new H.Map(
-        mapContainer, 
-        maptypes.vector.normal.map, 
+      this.map = new window.H.Map(
+        this.$refs.map,
+        maptypes.vector.normal.map,
         {
           zoom: 10,
           center: this.center
-          // center object { lat: 40.730610, lng: -73.935242 }
         }
-      );
-
+      ); 
       addEventListener("resize", () => this.map.getViewPort().resize());
-
       // add behavior control
-      new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
-
+      new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(this.map));
       // add UI
-      H.ui.UI.createDefault(this.map, maptypes);
-      // End rendering the initial map
-    },
-    drawRoute(start, finish) {
-      console.log('start, finish', start, finish);
-      this.routingService.calculateRoute(
-        {
-          "mode": "fastest;car;traffic:enabled",
-          "waypoint0": `${start.lat},${start.lng}`,
-          "waypoint1": `${finish.lat},${finish.lng}`,
-          "representation": "display"
-        },
-        data => {
-          // console.log(data);
-          if (data.response.route.length > 0) {
-            const H = window.H;
-            let lineString = new this.H.geo.LineString();
-            data.response.route[0].shape.forEach(point => {
-              let [lat, lng] = point.split(",");
-              lineString.pushPoint({ lat: lat, lng: lng});
+      window.H.ui.UI.createDefault(this.map, maptypes);
+    }, 
+    geocode(query) {
+      return new Promise((resolve, reject) => {
+        this.geocoder.geocode({ searchText: query }, data => {
+          if(data.Response.View[0].Result.length > 0) {
+            data = data.Response.View[0].Result.map(location => {
+              return {
+                lat: location.Location.DisplayPosition.Latitude,
+                lng: location.Location.DisplayPosition.Longitude
+              };
             });
-            let polyline = new H.map.Polyline(
-              lineString,
-              {
-                style: {
-                  lineWidth: 15,
-                  strokeColor: 'blue'
-                }
-              }
-            );
-            this.map.addObjects(polyline);
-            this.map.getViewModel().setLookAtData({ bounds: polyline.getBoudingBox() })
+            resolve(data);
+          } else {
+            reject({ "message": "No data found" });
           }
-
-        },
-        error => {
-          console.error(error);
+        }, error => {
+            reject(error);
+        });
+      });
+    },
+    route() {
+      const H = window.H;
+      let params = {
+        "mode": "fastest;car",
+        "representation": "display"
+      }
+      let waypoints = [];
+      this.map.removeObjects(this.map.getObjects());
+      this.directions = [];
+      waypoints = [this.geocode(this.start), this.geocode(this.finish)];
+      Promise.all(waypoints).then(result => {
+        let markers = [];
+        for(let i = 0; i < result.length; i++) {
+          params["waypoint" + i] = result[i][0].lat + "," + result[i][0].lng;
+          markers.push(new H.map.Marker(result[i][0]));
         }
-      );
+        this.router.calculateRoute(params, data => {
+          if(data.response) {
+            for(let i = 0; i < data.response.route[0].leg.length; i++) {
+              this.directions = this.directions.concat(data.response.route[0].leg[i].maneuver);
+            }
+            data = data.response.route[0];
+            let lineString = new H.geo.LineString();
+            data.shape.forEach(point => {
+              let parts = point.split(",");
+              lineString.pushLatLngAlt(parts[0], parts[1]);
+            });
+            let routeLine = new H.map.Polyline(lineString, {
+              style: { strokeColor: "blue", lineWidth: 5 }
+            });
+            console.log(routeLine);
+            this.map.addObjects([routeLine, ...markers]);
+            // this.map.setViewBounds(routeLine.getBounds());
+            // Set the map's viewport to make the whole route visible:
+            this.map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
+          }
+        }, error => {
+          console.error(error);
+        });
+      });
     }
   }
-};
+}
 </script>
 
 <style scoped>

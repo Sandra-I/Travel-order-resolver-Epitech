@@ -24,21 +24,7 @@
             <p>{{ itinerary }}</p>
           </div>
           <hr>
-          <div id="app2">
-            <div style="padding: 10px 0">
-                <div>
-                    <label style="display: inline-block; width: 60px; color: #FFF">Start</label>
-                    <input type="text" v-model="start" />
-                </div>
-                <div>
-                    <label style="display: inline-block; width: 60px; color: #FFF">Finish</label>
-                    <input type="text" v-model="finish" />
-                </div>
-                <button type="button" v-on:click="route()">Route</button>
-            </div>
-            <HereMap :center="center" ref="map" width="100" height="530px" :start="start" :finish="finish"/>
-        </div>
-          <!-- <HereMap :center="center" ref="map" width="60" height="530px"/> -->
+          <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish"/>
         </b-card>
       </b-collapse>
     </div>
@@ -48,7 +34,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { sendText } from '../../api/resolver';
-import HereMap from './HereMap copy.vue';
+import HereMap from './HereMap.vue';
 
 export default Vue.extend({
   name: 'HomePage',
@@ -64,8 +50,8 @@ export default Vue.extend({
         lat: 43.6124203, 
         lng: 1.4289301
       },
-      start: "Bordeaux",
-      finish: "Toulouse"
+      start: "Gare de Bordeaux",
+      finish: "Gare de Toulouse"
     }
   },
   mounted() {
