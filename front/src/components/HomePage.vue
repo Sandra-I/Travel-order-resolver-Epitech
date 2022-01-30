@@ -16,7 +16,7 @@
       <!-- <b-button v-b-toggle.collapse-1 class="m-1"></b-button> -->
       <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
-        <b-card id="itiBloc">
+        <b-card id="itiBloc" v-if="Object.keys(this.itineraryResult).length != 0">
           <h1>Les itinéraires</h1>
           <hr>
           <!-- <div>{{ itineraryResult }}</div> -->
@@ -74,7 +74,10 @@ export default Vue.extend({
       this.isTextReceived = false;
       textRecorded = transcriptions;
       console.log('textRecorded', textRecorded)
-      if (textRecorded) this.sendText(textRecorded);
+      if (textRecorded) {
+        this.textSent = textRecorded;
+        this.sendText(textRecorded);
+      }
     },
     sendText(text: string) {
       axios
@@ -83,7 +86,6 @@ export default Vue.extend({
           if(response.status == 200 && response.data) {
             console.log(response.data)
             this.isTextReceived = true;
-            this.textSent = text;
             this.itineraryResult = response.data.train;
             this.showItinerariesBloc = true;
             console.log(this.itineraryResult)
