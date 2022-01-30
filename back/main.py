@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 import source.TripEvaluation.main_eval as tp
 import source.Itinerary.itinerary as it
 import source.HereMap.GetYourRoute as map
+import copy
 
 app = Flask(__name__) 
 CORS(app, resources=r'*')
@@ -23,14 +24,12 @@ def vocal():
     if phrase:
         tripArray = tp.main_test(phrase)
         if tripArray != 'Invalid Sentence':
-            print('tripArray', tripArray, len(tripArray))
+            arrayFroMap = copy.deepcopy(tripArray)
+
             itinerary = it.get_itinerary(locArray = tripArray)
             print(f"reponse finale {itinerary}")
 
-            test = ['Toulouse', 'Bordeaux']
-            # test = [tripArray[0], tripArray[1]]
-            print('test', test)
-            mapItinerary = map.GetRoute(test[0], test[1])
+            mapItinerary = map.GetRoute(arrayFroMap)
             print(mapItinerary)
     
     return jsonify({

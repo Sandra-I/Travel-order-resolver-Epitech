@@ -93,11 +93,11 @@ def GetLocationCoordinates(cityName):
 
 
 # Allow to recover the route between two cities
-def GetRoute(departure, arrival):
+def GetRoute(cityArray):
     baseUrl = 'https://router.hereapi.com/v8/routes?'
     transportMode = 'car'
-    origin = GetLocationCoordinates(departure)
-    destination = GetLocationCoordinates(arrival)
+    origin = GetLocationCoordinates(cityArray[0])
+    destination = GetLocationCoordinates(cityArray[1])
     returns = 'summary'
     lang = 'fr'
 
