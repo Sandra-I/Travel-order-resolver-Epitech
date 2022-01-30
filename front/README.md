@@ -1,5 +1,6 @@
-# travel-order-resolver
+# Travel-order-resolver interface
 
+From /front folder
 ## Project setup
 ```
 npm install
@@ -20,5 +21,5 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+Accéder à l'interface web depuis l'adresse http://localhost:8080/
