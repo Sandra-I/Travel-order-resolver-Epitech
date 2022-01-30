@@ -245,7 +245,7 @@ def get_itinerary(df = itineraries, locArray = []):
         
         result = get_step_itinerary(df, locStart, locEnd)
         
-        if result != "None":
+        if result and result != "None":
             fullTrip = fullTrip + result['itineraries']
             distance = distance + result['distance']
             locArray.pop(0)
