@@ -27,6 +27,7 @@
             <!-- <hr> -->
           </div>
           <hr>
+          <HereMap  :center="center" />
         </b-card>
       </b-collapse>
     </div>
@@ -36,9 +37,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import axios from 'axios';
+import HereMap from './HereMap.vue';
 
 export default Vue.extend({
   name: 'HomePage',
+  components: { HereMap },
   data() {
     return {
       isTextReceived: false,
@@ -48,7 +51,11 @@ export default Vue.extend({
       //   "distance": 283,
       //   "itineraries": ["Gare de Toulouse-Matabiau","Gare de Cahors","Gare de Brive-la-Gaillarde","Gare de Bordeaux-St-Jean"]
       // },
-      showItinerariesBloc: false
+      showItinerariesBloc: false,
+      center:{ 
+        lat: 43.6124203, 
+        lng: 1.4289301
+      }
     }
   },
   // computed: {
