@@ -22,18 +22,20 @@ def vocal():
     print('phrase received', phrase)
     if phrase:
         tripArray = tp.main_test(phrase)
+        cities = copy.deepcopy(tripArray)
         if tripArray != 'Invalid Sentence':
-            arrayFroMap = copy.deepcopy(tripArray)
+            arrayFromMap = copy.deepcopy(tripArray)
 
             itinerary = it.get_itinerary(locArray = tripArray)
             print(f"reponse finale {itinerary}")
 
-            mapItinerary = map.GetRoute(arrayFroMap)
+            mapItinerary = map.GetRoute(arrayFromMap)
             print(mapItinerary)
     
     return jsonify({
         'train': itinerary,
-        'car': mapItinerary
+        'car': mapItinerary,
+        'cities': cities
     })
 
 if __name__ == '__main__': 
