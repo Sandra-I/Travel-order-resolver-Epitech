@@ -15,7 +15,8 @@
     <div class="col col-12 my-5">
       <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
-        <b-card id="itiBloc" v-if="Object.keys(this.itineraryResult).length != 0">
+        <!-- v-if="Object.keys(this.itineraryResult).length != 0" -->
+        <b-card id="itiBloc" >
           <h1>Les itinéraires</h1>
           <hr>
           <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
@@ -23,7 +24,21 @@
             <p>{{ itinerary }}</p>
           </div>
           <hr>
-          <HereMap :center="center" />
+          <div id="app2">
+            <div style="padding: 10px 0">
+                <div>
+                    <label style="display: inline-block; width: 60px; color: #FFF">Start</label>
+                    <input type="text" v-model="start" />
+                </div>
+                <div>
+                    <label style="display: inline-block; width: 60px; color: #FFF">Finish</label>
+                    <input type="text" v-model="finish" />
+                </div>
+                <button type="button" v-on:click="route()">Route</button>
+            </div>
+            <HereMap :center="center" ref="map" width="100" height="530px" :start="start" :finish="finish"/>
+        </div>
+          <!-- <HereMap :center="center" ref="map" width="60" height="530px"/> -->
         </b-card>
       </b-collapse>
     </div>
@@ -33,7 +48,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { sendText } from '../../api/resolver';
-import HereMap from './HereMap.vue';
+import HereMap from './HereMap copy.vue';
 
 export default Vue.extend({
   name: 'HomePage',
@@ -44,20 +59,36 @@ export default Vue.extend({
       textSent: '',
       itineraryResult: {},
       carResult: {},
-      showItinerariesBloc: false,
+      showItinerariesBloc: true,
       center:{ 
         lat: 43.6124203, 
         lng: 1.4289301
-      }
+      },
+      start: "Bordeaux",
+      finish: "Toulouse"
     }
+  },
+  mounted() {
+    // console.log(this.$refs)
+    // let map = this.$refs.map;
+    // map.drawRoute(
+    //   {
+    //     lat: "37",
+    //     lng: "-121"
+    //   },
+    //   {
+    //     lat: "38",
+    //     lng: "-122"
+    //   }
+    // )
   },
   methods: {
     speechEnd({transcriptions}) {
       let textRecorded = '';
       this.isTextReceived = false;
       textRecorded = transcriptions;
-      console.log('Texte enregistré', textRecorded)
       if (textRecorded) {
+        console.log('Texte enregistré', textRecorded)
         this.textSent = textRecorded;
         this.getResolver(textRecorded);
       }
