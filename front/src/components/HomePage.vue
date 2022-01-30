@@ -30,10 +30,11 @@
                 </div>
                 <hr>
               <!-- </b-card> -->
+              <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish" :way="trainResult"/>
             </b-tab>
 
             <b-tab title="Voiture">
-              <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish" :way="trainResult"/>
+              <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish" :way="carResult"/>
             </b-tab>
           </b-tabs>
         </div>
@@ -83,7 +84,7 @@ export default Vue.extend({
       this.itineraryResult = result.train;
       this.trainResult = result.train.itineraries;
 
-      this.carResult = result.car;
+      this.carResult = result.cities;
       this.showItinerariesBloc = true;
     }
   }
