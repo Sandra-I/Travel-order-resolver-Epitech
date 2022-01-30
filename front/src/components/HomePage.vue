@@ -34,24 +34,6 @@
             </b-tabs>
           </div>
         </template>
-
-        <!-- <div>
-          <h1>Les itinéraires</h1>
-          <b-tabs content-class="mt-3" align="center">
-            <b-tab title="Train" active>
-                <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
-                <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
-                  <p>{{ itinerary }}</p>
-                </div>
-                <hr>
-              <HereMap :center="center" ref="map" width="100" height="640px" :way="trainResult"/>
-            </b-tab>
-
-            <b-tab title="Voiture">
-              <HereMap :center="center" ref="map" width="100" height="640px" :way="carResult"/>
-            </b-tab>
-          </b-tabs>
-        </div> -->
       </b-collapse>
     </div>
   </div>
