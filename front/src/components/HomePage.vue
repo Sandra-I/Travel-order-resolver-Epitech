@@ -23,18 +23,16 @@
           <h1>Les itinéraires</h1>
           <b-tabs content-class="mt-3" align="center">
             <b-tab title="Train" active>
-              <!-- <b-card id="itiBloc" > -->
                 <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
                 <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
                   <p>{{ itinerary }}</p>
                 </div>
                 <hr>
-              <!-- </b-card> -->
-              <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish" :way="trainResult"/>
+              <HereMap :center="center" ref="map" width="100" height="640px" :way="trainResult"/>
             </b-tab>
 
             <b-tab title="Voiture">
-              <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish" :way="carResult"/>
+              <HereMap :center="center" ref="map" width="100" height="640px" :way="carResult"/>
             </b-tab>
           </b-tabs>
         </div>
@@ -62,8 +60,6 @@ export default Vue.extend({
         lat: 43.6124203, 
         lng: 1.4289301
       },
-      start: "Gare de Bordeaux",
-      finish: "Gare de Toulouse",
       trainResult: []
     }
   },
@@ -105,6 +101,5 @@ export default Vue.extend({
     }
   }
 }
-
 
 </style>

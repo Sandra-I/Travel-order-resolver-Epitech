@@ -27,8 +27,6 @@ export default {
     width: String,
     height: String,
     center: Object,
-    start: String,
-    finish: String,
     way: Array
   },
   created() {
@@ -39,7 +37,6 @@ export default {
     this.geocoder = this.platform.getGeocodingService();
   },
   mounted() {
-    console.log('this.way', this.way)
     this.initializeHereMap();
     this.route();
   },
@@ -67,7 +64,6 @@ export default {
     }, 
     geocode(query) {
       return new Promise((resolve, reject) => {
-        console.log('Promise geocode')
         this.geocoder.geocode({ searchText: query }, data => {
           if(data.Response.View[0].Result.length > 0) {
             data = data.Response.View[0].Result.map(location => {
@@ -95,6 +91,8 @@ export default {
       this.map.removeObjects(this.map.getObjects());
       
       this.directions = [];
+
+      console.log('this.way', this.way)
 
       this.way.map(res => {
         waypoints.push(this.geocode(res));
@@ -134,6 +132,7 @@ export default {
 
 <style scoped>
 #map {
+  height: 650px;
   width: 100%;
   text-align: center;
   margin-bottom: 20px;
