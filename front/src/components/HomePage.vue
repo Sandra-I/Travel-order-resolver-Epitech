@@ -15,16 +15,29 @@
     <div class="col col-12 my-5">
       <b-img src="../assets/transport.png" alt="Transport image" v-b-toggle.collapse-1 class="m-1"></b-img>
       <b-collapse :visible="showItinerariesBloc" id="collapse-1">
-        <b-card id="itiBloc" v-if="Object.keys(this.itineraryResult).length != 0">
+        <template  v-if="Object.keys(this.itineraryResult).length != 0">
+
+        </template>
+
+        <div>
           <h1>Les itinéraires</h1>
-          <hr>
-          <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
-          <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
-            <p>{{ itinerary }}</p>
-          </div>
-          <hr>
-          <HereMap :center="center" />
-        </b-card>
+          <b-tabs content-class="mt-3" align="center">
+            <b-tab title="Train" active>
+              <!-- <b-card id="itiBloc" > -->
+                <p>Temps de trajet : {{ itineraryResult.distance }} minutes</p>
+                <div v-for="(itinerary, index) in itineraryResult.itineraries" :key="index">
+                  <p>{{ itinerary }}</p>
+                </div>
+                <hr>
+                <HereMap :center="center" ref="map" width="100" height="640px" :start="start" :finish="finish" :way="trainResult"/>
+              <!-- </b-card> -->
+            </b-tab>
+
+            <b-tab title="Voiture">
+
+            </b-tab>
+          </b-tabs>
+        </div>
       </b-collapse>
     </div>
   </div>
@@ -44,11 +57,14 @@ export default Vue.extend({
       textSent: '',
       itineraryResult: {},
       carResult: {},
-      showItinerariesBloc: false,
+      showItinerariesBloc: true,
       center:{ 
         lat: 43.6124203, 
         lng: 1.4289301
-      }
+      },
+      start: "Gare de Bordeaux",
+      finish: "Gare de Toulouse",
+      trainResult: []
     }
   },
   methods: {
@@ -56,8 +72,8 @@ export default Vue.extend({
       let textRecorded = '';
       this.isTextReceived = false;
       textRecorded = transcriptions;
-      console.log('Texte enregistré', textRecorded)
       if (textRecorded) {
+        console.log('Texte enregistré', textRecorded)
         this.textSent = textRecorded;
         this.getResolver(textRecorded);
       }
@@ -66,7 +82,12 @@ export default Vue.extend({
       const result = await sendText(text);
       this.isTextReceived = true;
       this.itineraryResult = result.train;
+      this.trainResult = result.train.itineraries;
+
       this.carResult = result.car;
+      // TEST
+      console.log(this.carResult)
+      // this.start = this.itineraryResult
       this.showItinerariesBloc = true;
     }
   }
