@@ -97,21 +97,10 @@ export default {
       this.directions = [];
 
       this.way.map(res => {
-        console.log(res)
-        // const goeRes = await this.geocode(res);
         waypoints.push(this.geocode(res));
       })
 
-      // for (const res of this.way) {
-      //   console.log('for')
-      //   const test = this.geocode(res)
-      //   waypoints.push(test);
-      // }
-      
-      // waypoints = [this.geocode('Toulouse'), this.geocode('Gare de Brive-la-Gaillarde'), this.geocode('Gare de Bordeaux-St-Jean')];
-      console.log(waypoints)
       Promise.all(waypoints).then(result => {
-        console.log('Promise all')
         let markers = [];
         for(let i = 0; i < result.length; i++) {
           params["waypoint" + i] = result[i][0].lat + "," + result[i][0].lng;
@@ -131,10 +120,7 @@ export default {
             let routeLine = new H.map.Polyline(lineString, {
               style: { strokeColor: "blue", lineWidth: 5 }
             });
-            console.log(routeLine);
             this.map.addObjects([routeLine, ...markers]);
-            // this.map.setViewBounds(routeLine.getBounds());
-            // Set the map's viewport to make the whole route visible:
             this.map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
           }
         }, error => {
@@ -150,7 +136,7 @@ export default {
 #map {
   width: 100%;
   text-align: center;
-  margin: 5% auto;
+  margin-bottom: 20px;
   background-color: #ccc;
 }
 </style>
